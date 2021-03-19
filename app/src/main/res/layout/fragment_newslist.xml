@@ -30,5 +30,6 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context=".newslist.NewsListFragment"
-    tools:listitem="@layout/newslist_item" />
+    tools:listitem="@layout/newslist_item"
+    android:padding="10dp"/>
 </LinearLayout>

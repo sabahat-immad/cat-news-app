@@ -11,7 +11,8 @@ import saba.qazi.catnews.newslist.data.News
 
 
 class NewsListRecyclerViewAdapter(
-    private val values: List<News>
+    private val values: List<News>,
+    private val listener : (String) -> Unit
 ) : RecyclerView.Adapter<NewsListRecyclerViewAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,6 +29,7 @@ class NewsListRecyclerViewAdapter(
             holder.storyDetail.text = item.teaserText
             holder.catImage.setImageResource(item.image)
             holder.storyUrl.text = item.url
+            holder.root.setOnClickListener { listener(item.id!!) }
 
     }
 
@@ -39,6 +41,7 @@ class NewsListRecyclerViewAdapter(
         val storyDetail: TextView = view.findViewById(R.id.story_text)
         val catImage : ImageView = view.findViewById(R.id.cat_image)
         val storyUrl : TextView = view.findViewById(R.id.story_URL)
+        val root : View = view.findViewById(R.id.news_list_item_root)
 
     }
 }

@@ -3,6 +3,7 @@ package saba.qazi.catnews
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -23,7 +24,7 @@ import org.junit.Rule
 
 
 @RunWith(AndroidJUnit4::class)
-class NewsOldListFeature {
+class NewsListUIFeature {
 
     val activityRule = ActivityTestRule(MainActivity::class.java)
         @Rule get
@@ -42,18 +43,17 @@ class NewsOldListFeature {
     @Test
     fun displayListOfCatNews(){
         Thread.sleep(4000)
-    assertRecyclerViewItemCount(R.id.playlists_list,10)
 
-        onView(allOf(withId(R.id.story_headline), isDescendantOfA(nthChildOf(withId(R.id.playlists_list),0))))
-            .check(matches(withText("Hard Rock Cafe")))
+        onView(allOf(withId(R.id.story_headline), isDescendantOfA(nthChildOf(withId(R.id.news_list),0))))
+            .check(matches(withText("Story Headline")))
             .check(matches(isDisplayed()))
 
-        onView(allOf(withId(R.id.story_text), isDescendantOfA(nthChildOf(withId(R.id.playlists_list),0))))
-            .check(matches(withText("rock")))
+        onView(allOf(withId(R.id.story_text), isDescendantOfA(nthChildOf(withId(R.id.news_list),0))))
+            .check(matches(withText("Story teaser text")))
             .check(matches(isDisplayed()))
 
-        onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.playlists_list),1))))
-            .check(matches(withDrawable(R.mipmap.playlist)))
+        onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.news_list),1))))
+            .check(matches(withDrawable(R.mipmap.cat_img)))
             .check(matches(isDisplayed()))
 }
     @Test
@@ -68,15 +68,22 @@ class NewsOldListFeature {
     }
 
     @Test
-    fun displaysRockImageForRockListItems(){
+    fun displaysWeblinksForWebListItems(){
         Thread.sleep(4000)
-        onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.playlists_list),0))))
-                .check(matches(withDrawable(R.mipmap.rock)))
+        onView(allOf(withId(R.id.story_URL), isDescendantOfA(nthChildOf(withId(R.id.news_list),3))))
+                .check(matches(withText("weblink url")))
                 .check(matches(isDisplayed()))
 
-        onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.playlists_list),3))))
-                .check(matches(withDrawable(R.mipmap.rock)))
-                .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun navigateToStoryDetailScreen(){
+        Thread.sleep(4000)
+
+        onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.news_list),1))))
+                .perform(click())
+
+        assertDisplayed(R.id.story_detail_fragment)
     }
     fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
         return object : TypeSafeMatcher<View>() {

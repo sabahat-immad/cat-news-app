@@ -1,4 +1,4 @@
-package saba.qazi.catnews.newslist
+package saba.qazi.catnews.newslist.di
 
 import dagger.Module
 import dagger.Provides
@@ -7,6 +7,7 @@ import dagger.hilt.android.components.FragmentComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import saba.qazi.catnews.newslist.NewsListAPI
 
 @Module
 @InstallIn(FragmentComponent::class)

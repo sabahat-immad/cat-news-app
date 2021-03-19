@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_newslist.*
 import kotlinx.android.synthetic.main.fragment_newslist.view.*
@@ -56,7 +57,11 @@ class NewsListFragment : Fragment() {
         with (view as RecyclerView) {
 
                 layoutManager = LinearLayoutManager(context)
-                adapter = NewsListRecyclerViewAdapter(newsList)
+                adapter = NewsListRecyclerViewAdapter(newsList) { id ->
+                    val action =
+                        NewsListFragmentDirections.actionNewsListFragmentToStoryDetailFragment(id)
+                    findNavController().navigate(action)
+                }
 
         }
     }
