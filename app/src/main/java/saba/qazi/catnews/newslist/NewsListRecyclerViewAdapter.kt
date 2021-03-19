@@ -22,12 +22,13 @@ class NewsListRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        if(item.type != "advert") {
+
             holder.storyHeadline.text = item.headline
             holder.dateModified.text = item.modifiedDate?.substring(0, 10)
             holder.storyDetail.text = item.teaserText
-            holder.catImage.setImageResource(R.mipmap.cat_img)
-        }
+            holder.catImage.setImageResource(item.image)
+            holder.storyUrl.text = item.url
+
     }
 
     override fun getItemCount(): Int = values.size
@@ -37,6 +38,7 @@ class NewsListRecyclerViewAdapter(
         val dateModified: TextView = view.findViewById(R.id.time)
         val storyDetail: TextView = view.findViewById(R.id.story_text)
         val catImage : ImageView = view.findViewById(R.id.cat_image)
+        val storyUrl : TextView = view.findViewById(R.id.story_URL)
 
     }
 }

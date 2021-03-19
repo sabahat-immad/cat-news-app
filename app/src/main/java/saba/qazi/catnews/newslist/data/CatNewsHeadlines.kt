@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class CatNewsHeadlines(
     @SerializedName("data")
-    val newsData : List<News>,
+    val newsData : List<NewsRaw>,
     val title: String
 )
