@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -33,21 +34,30 @@ class NewsListFragment : Fragment() {
 
         setupViewModel()
 
-        viewModel.loader.observe(this as LifecycleOwner, {loading ->
-            when(loading){
+        observeLoader()
+
+        observeNewsList(view)
+
+        return view
+    }
+
+    private fun observeLoader() {
+        viewModel.loader.observe(this as LifecycleOwner, { loading ->
+            when (loading) {
                 true -> loader.visibility = View.VISIBLE
                 else -> loader.visibility = View.GONE
             }
         })
+    }
+
+    private fun observeNewsList(view: View) {
         viewModel.newsList.observe(this as LifecycleOwner, { newsList ->
             if (newsList.getOrNull() != null)
-            setupList(view.news_list, newsList.getOrNull()!!)
-            else{
-            //TODO
+                setupList(view.news_list, newsList.getOrNull()!!)
+            else {
+                showErrorToast()
             }
         })
-
-        return view
     }
 
     private fun setupList(
@@ -78,5 +88,12 @@ class NewsListFragment : Fragment() {
             NewsListFragment().apply {
 
             }
+    }
+
+    private fun showErrorToast() {
+        Toast.makeText(
+            activity, "Oops, Something wrong...please check your internet" +
+                    " connection and try again", Toast.LENGTH_SHORT
+        ).show()
     }
 }

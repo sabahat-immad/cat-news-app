@@ -3,6 +3,7 @@ package saba.qazi.catnews
 import android.view.View
 import android.view.ViewGroup
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -21,14 +22,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Rule
+import saba.qazi.catnews.newslist.di.idlingResource
 
 
-@RunWith(AndroidJUnit4::class)
-class NewsListUIFeature {
-
-    val activityRule = ActivityTestRule(MainActivity::class.java)
-        @Rule get
-
+class NewsListFeatureUI : BaseUITest(){
 
     @Test
     fun displayTitleText() {
@@ -42,7 +39,6 @@ class NewsListUIFeature {
     }
     @Test
     fun displayListOfCatNews(){
-        Thread.sleep(4000)
 
         onView(allOf(withId(R.id.story_headline), isDescendantOfA(nthChildOf(withId(R.id.news_list),0))))
             .check(matches(withText("Story Headline")))
@@ -58,18 +54,21 @@ class NewsListUIFeature {
 }
     @Test
     fun displaysLoaderWhenFetchingTheNewsList(){
+        /*we have explicitly unregistered idling resource because if we dont, soon after we did
+        * the http call the thread sleeps and wont detect the UI loader */
+        IdlingRegistry.getInstance().unregister(idlingResource)
         assertDisplayed(R.id.loader)
     }
 
     @Test
     fun hidesLoaderWhenNewsAreFetched(){
-        Thread.sleep(4000)
+
         assertNotDisplayed(R.id.loader)
     }
 
     @Test
     fun displaysWeblinksForWebListItems(){
-        Thread.sleep(4000)
+
         onView(allOf(withId(R.id.story_URL), isDescendantOfA(nthChildOf(withId(R.id.news_list),3))))
                 .check(matches(withText("weblink url")))
                 .check(matches(isDisplayed()))
@@ -78,29 +77,12 @@ class NewsListUIFeature {
 
     @Test
     fun navigateToStoryDetailScreen(){
-        Thread.sleep(4000)
 
         onView(allOf(withId(R.id.cat_image), isDescendantOfA(nthChildOf(withId(R.id.news_list),1))))
                 .perform(click())
 
         assertDisplayed(R.id.story_detail_fragment)
     }
-    fun nthChildOf(parentMatcher: Matcher<View>, childPosition: Int): Matcher<View> {
-        return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
-                description.appendText("position $childPosition of parent ")
-                parentMatcher.describeTo(description)
-            }
 
-            public override fun matchesSafely(view: View): Boolean {
-                if (view.parent !is ViewGroup) return false
-                val parent = view.parent as ViewGroup
-
-                return (parentMatcher.matches(parent)
-                        && parent.childCount > childPosition
-                        && parent.getChildAt(childPosition) == view)
-            }
-        }
-    }
 
 }

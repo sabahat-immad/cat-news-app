@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_story_detail.*
 import saba.qazi.catnews.R
 import saba.qazi.catnews.newslist.data.News
 
@@ -27,10 +29,17 @@ class NewsListRecyclerViewAdapter(
             holder.storyHeadline.text = item.headline
             holder.dateModified.text = item.modifiedDate?.substring(0, 10)
             holder.storyDetail.text = item.teaserText
-            holder.catImage.setImageResource(item.image)
             holder.storyUrl.text = item.url
+        if (item.type == "story")
             holder.root.setOnClickListener { listener(item.id!!) }
 
+        if(item.type != "advert") {
+            Glide
+                .with(holder.catImage.context)
+                .load(item.teaserImage?._links?.url?.href)
+                .placeholder(R.mipmap.cat_img)
+                .into(holder.catImage);
+        }
     }
 
     override fun getItemCount(): Int = values.size
