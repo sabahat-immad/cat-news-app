@@ -6,7 +6,7 @@ Replicated the wireframes provided, the only change being all stories in the lis
 to make the screen look consistent and clean.
 
 ## Build Prototype
-The app follows MVVM architecture to achieve clean code and architecture. The following main tasks are done to create the prototype:
+The app follows MVVM architecture to achieve clean code and architecture. I have made full use of TDD (test driven development) in the project. The following main tasks are done to create the prototype:
 
 ### Mock API:
 Used Postman to mock both API. The base url for the mock server is "https://332ea193-ba5c-4be9-8981-5eca5d3c99f9.mock.pstmn.io" and endpoints are
